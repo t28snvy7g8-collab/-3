@@ -1,0 +1,51 @@
+// 地点データ（竣工図に基づきIDを定義）
+const nodes = [
+    { id: 'gate', name: '正門', floor: 0, x: 120, y: 680 },
+    { id: 'stage', name: '中央ステージ', floor: 0, x: 500, y: 550 },
+    { id: 'gym', name: '体育館', floor: 1, x: 775, y: 530 },
+    { id: 'room1A', name: '1-A (4F)', floor: 4, x: 300, y: 300 }
+];
+
+document.addEventListener('DOMContentLoaded', () => {
+    const startSelect = document.getElementById('start-node');
+    const endSelect = document.getElementById('end-node');
+
+    // セレクトボックスに地点を追加
+    nodes.forEach(node => {
+        const opt1 = new Option(node.name, node.id);
+        const opt2 = new Option(node.name, node.id);
+        startSelect.add(opt1);
+        endSelect.add(opt2);
+    });
+
+    // ★URLパラメータ（?here=...）の解析
+    const params = new URLSearchParams(window.location.search);
+    const initialLocation = params.get('here');
+    if (initialLocation) {
+        startSelect.value = initialLocation;
+        showToast(`現在地を ${initialLocation} にセットしました`);
+    }
+
+    // 階数切り替えイベント
+    document.querySelectorAll('.floor-btn').forEach(btn => {
+        btn.addEventListener('click', (e) => {
+            const floor = e.target.dataset.floor;
+            changeFloor(floor);
+        });
+    });
+});
+
+function changeFloor(floor) {
+    console.log(`Floor changed to: ${floor}`);
+    // ここに階数に応じたSVGの表示・非表示ロジックを書く
+    document.getElementById('current-floor-text').innerText = floor === 'all' ? '全体' : floor + 'F';
+    
+    document.querySelectorAll('.floor-btn').forEach(b => b.classList.remove('active'));
+    document.querySelector(`[data-floor="${floor}"]`).classList.add('active');
+}
+
+function showToast(msg) {
+    const footer = document.getElementById('status-message');
+    footer.innerText = msg;
+    footer.style.color = '#1a73e8';
+}
