@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>甲陽音展 3Dナビ 2025</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div id="app">
+        <header id="header">
+            <div class="title-bar">
+                <h1>甲陽音展マップ <span class="badge">2025</span></h1>
+            </div>
+            <div class="nav-controls">
+                <div class="input-group">
+                    <select id="start-node"><option value="">現在地を選択</option></select>
+                    <button id="swap-btn">⇅</button>
+                    <select id="end-node"><option value="">目的地を選択</option></select>
+                </div>
+                <button id="route-btn">ルートを検索</button>
+            </div>
+        </header>
+
+        <main id="map-container">
+            <div id="floor-indicator">表示階: <span id="current-floor-text">全体</span></div>
+            
+            <div id="zoom-area">
+                <svg id="map-svg" viewBox="0 0 1000 800" xmlns="http://www.w3.org/2000/svg">
+                    <defs>
+                        <filter id="drop-shadow"><feDropShadow dx="2" dy="4" stdDeviation="3" flood-opacity="0.2"/></filter>
+                    </defs>
+                    
+                    <g id="layer-ground">
+                        <path d="M50,700 L300,550 L950,550 L700,700 Z" fill="#e8f5e9" stroke="#c8e6c9"/>
+                        <text x="120" y="680" class="map-label">正門</text>
+                    </g>
+
+                    <g id="layer-courtyard">
+                        <rect x="400" y="500" width="200" height="100" fill="#fff9c4" stroke="#fbc02d" id="node-stage"/>
+                        <text x="500" y="555" class="map-label-bold" text-anchor="middle">中央ステージ</text>
+                    </g>
+
+                    <g id="layer-facilities" transform="translate(650, 450)">
+                        <rect x="0" y="0" width="250" height="150" fill="#e3f2fd" stroke="#2196f3" id="node-gym"/>
+                        <text x="125" y="80" class="map-label-bold" text-anchor="middle">体育館</text>
+                        <rect x="180" y="-80" width="70" height="70" fill="#efebe9" stroke="#795548" id="node-shokudo"/>
+                        <text x="215" y="-40" class="map-label" text-anchor="middle">食堂</text>
+                    </g>
+
+                    <g id="layer-building">
+                        <g id="floor-1" class="floor-group">
+                            <path d="M100,500 L500,500 L550,450 L150,450 Z" fill="#ffffff" stroke="#333" filter="url(#drop-shadow)"/>
+                            <text x="325" y="480" class="floor-label">1階：昇降口・事務室</text>
+                        </g>
+                        <g id="floor-2" class="floor-group" transform="translate(0, -40)">
+                            <path d="M100,500 L500,500 L550,450 L150,450 Z" fill="#ffffff" stroke="#333" filter="url(#drop-shadow)"/>
+                            <text x="325" y="480" class="floor-label">2階：3年生・図書室</text>
+                        </g>
+                        </g>
+                    
+                    <path id="route-path" d="" fill="none" stroke="#ff5252" stroke-width="5" stroke-dasharray="10" marker-end="url(#arrowhead)"/>
+                </svg>
+            </div>
+
+            <div id="floor-controls">
+                <button class="floor-btn" data-floor="5">5F</button>
+                <button class="floor-btn" data-floor="4">4F</button>
+                <button class="floor-btn" data-floor="3">3F</button>
+                <button class="floor-btn" data-floor="2">2F</button>
+                <button class="floor-btn" data-floor="1">1F</button>
+                <button class="floor-btn active" data-floor="all">ALL</button>
+            </div>
+        </main>
+
+        <footer id="footer">
+            <p id="status-message">目的地を選択してください</p>
+        </footer>
+    </div>
+    <script src="script.js"></script>
+</body>
+</html>
